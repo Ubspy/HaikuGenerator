@@ -1,0 +1,29 @@
+.main-btn
+{
+	padding: 10px;
+	margin-top: 0px;
+}
+
+.main-txt
+{
+	text-align: center;
+	color: white;
+}
+
+.sub-txt-top
+{
+	text-align: center;
+	padding-top: 20px;
+	color: #d9d9d9;
+}
+
+.sub-txt
+{
+	text-align: center;	
+	color: #d9d9d9;
+}
+
+body
+{
+	background-color: black;
+}
