@@ -30,6 +30,9 @@ var inputText = ("A honey bee named Barry Benson has recently graduated from col
 //Proper nouns to keep capitalized
 var properNouns = ["Barry", "Barry's" ,"Benson", "Honex", "Industries", "Adam", "Adam's", "Flayman", "Vanessa", "Vanessa's", "Ken", "Layton","Montgomery", "California", "New", "York", "City"];
 
+//Array of words not to end a line with
+var avoidEnding = ["and", "the", "so", "he", "to", "is", "while", "his", "that", "with", "as", "a", "are", "by", "of", "in", "its", "from"];
+
 //Here's a list of exceptions to the basic rules of syllable counting in our getSyllables function below
 var syllableExceptions = [];
 syllableExceptions["bee"] = 1;
@@ -66,6 +69,7 @@ syllableExceptions["cryptically"] = 3;
 syllableExceptions["die"] = 1;
 syllableExceptions["plane's"] = 1;
 syllableExceptions["unconscious"] = 3;
+syllableExceptions["terrified"] = 3;
 
 var lastVowel = false;
 
@@ -108,8 +112,8 @@ function createNgrams()
 			ngrams[gram] = [];
 		}
 
-		//If it's already there, add the character after the substring as a possibility
-		ngrams[gram].push(inputText.charAt(i + order));
+		//If it's already there, add the character after the substring as a possibility		
+		ngrams[gram][ngrams[gram].length] = inputText.charAt(i + order);
 	}
 }
 
@@ -209,6 +213,13 @@ function generateLine(expectedSyllables)
 		result = generateLine(expectedSyllables);
 	}
 
+	var correntEnding = checkEnding(result);
+
+	if(!correntEnding)
+	{
+		result = generateLine(expectedSyllables);
+	}
+
 	return result;
 }
 
@@ -266,14 +277,6 @@ function getSyllables(word)
 
 function cleanString(toClean)
 {
-	//Gets rid of puncuation
-	toClean = toClean.replace(",", "");
-	toClean = toClean.replace(".", "");
-	toClean = toClean.replace("\"", "");
-	toClean = toClean.replace("-", "");
-	toClean = toClean.replace(")", "");
-	toClean = toClean.replace("(", "");
-
 	//Splits the regular string into an array of words
 	toFixCapitals = toClean.split(" ");
 
@@ -286,7 +289,11 @@ function cleanString(toClean)
 		//This will run if the srting toClean isn't in the array
 		if(properNouns.indexOf(toFixCapitals[i]) < 0)
 		{
+			//Sets the word to lowercase
 			toFixCapitals[i] = toFixCapitals[i].toLowerCase();
+
+			//Removes special characters
+			toFixCapitals[i] = toFixCapitals[i].replace(/[`~!@#$%^&*()_|+\-=÷¿?;:'",.<>\{\}\[\]\\\/]/gi, '');
 		}
 	}
 
@@ -294,18 +301,38 @@ function cleanString(toClean)
 	for(var i = 0; i < toFixCapitals.length; i++)
 	{
 		toClean += toFixCapitals[i];
-		toClean += " ";
+		
+		if(i != toFixCapitals.length - 1)
+		{
+			toClean += " ";
+		}
 	}
 
 
 	//Removes the space at the end of the string, and keeps removing characters until it hits a space to remove extra, incomplete words
-	do
+	while(toClean[toClean.length - 1] != " ")
 	{
+		console.log(toClean, toClean[toClean.length - 1]);
 		toClean = toClean.substring(0, toClean.length - 1);	
 	}
-	while(toClean[toClean.length - 1] != " ");
 
 	return toClean;
+}
+
+function checkEnding(line)
+{
+	//Splits the line into words
+	var words = line.split(" ");
+
+	//Checks the last word, and sees if it's an appropriate word to end on
+	if(avoidEnding.indexOf(words[words.length - 2]) > -1)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 function isVowel(char)
