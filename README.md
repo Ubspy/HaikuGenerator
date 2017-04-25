@@ -1,2 +1,3 @@
 # HaikuGenerator
-This is a website that generates a haiku using the text from the plot section of the wikipedia page of the bee movie
+In this project, I used the siimple framework
+This is my first javascript project, but I'm pretty proud of it
