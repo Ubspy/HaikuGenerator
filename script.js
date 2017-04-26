@@ -31,7 +31,7 @@ var inputText = ("A honey bee named Barry Benson has recently graduated from col
 var properNouns = ["Barry", "Barry's" ,"Benson", "Honex", "Industries", "Adam", "Adam's", "Flayman", "Vanessa", "Vanessa's", "Ken", "Layton","Montgomery", "California", "New", "York", "City"];
 
 //Array of words not to end a line with
-var avoidEnding = ["and", "the", "so", "he", "to", "is", "while", "his", "that", "with", "as", "a", "are", "by", "of", "in", "its", "from"];
+var avoidEnding = ["and", "the", "so", "he", "to", "is", "while", "his", "that", "with", "as", "a", "are", "by", "of", "in", "its", "from", "has"];
 
 //Here's a list of exceptions to the basic rules of syllable counting in our getSyllables function below
 var syllableExceptions = [];
@@ -71,6 +71,7 @@ syllableExceptions["plane's"] = 1;
 syllableExceptions["unconscious"] = 3;
 syllableExceptions["terrified"] = 3;
 
+//Stores if the last character was a vowel
 var lastVowel = false;
 
 //These string will store out lines for our haiku
@@ -95,7 +96,6 @@ function generatePoem()
 	document.getElementById("line1").innerHTML = capitalize(firstLine);
 	document.getElementById("line2").innerHTML = capitalize(secondLine);
 	document.getElementById("line3").innerHTML = capitalize(thirdLine);
-
 }
 
 function createNgrams()
@@ -307,14 +307,13 @@ function cleanString(toClean)
 			toClean += " ";
 		}
 	}
-
-
+	
 	//Removes the space at the end of the string, and keeps removing characters until it hits a space to remove extra, incomplete words
-	while(toClean[toClean.length - 1] != " ")
+	while(toClean[toClean.length - 1] != " " && toClean.length > 5)
 	{
-		console.log(toClean, toClean[toClean.length - 1]);
 		toClean = toClean.substring(0, toClean.length - 1);	
 	}
+
 
 	return toClean;
 }
