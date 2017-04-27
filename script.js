@@ -31,7 +31,7 @@ var inputText = ("A honey bee named Barry Benson has recently graduated from col
 var properNouns = ["Barry", "Barry's" ,"Benson", "Honex", "Industries", "Adam", "Adam's", "Flayman", "Vanessa", "Vanessa's", "Ken", "Layton","Montgomery", "California", "New", "York", "City"];
 
 //Array of words not to end a line with
-var avoidEnding = ["and", "the", "so", "he", "to", "is", "while", "his", "that", "with", "as", "a", "are", "by", "of", "in", "its", "from", "has"];
+var avoidEnding = ["and", "the", "so", "he", "to", "is", "while", "his", "that", "with", "as", "a", "are", "by", "of", "in", "its", "from", "has", "for"];
 
 //Here's a list of exceptions to the basic rules of syllable counting in our getSyllables function below
 var syllableExceptions = [];
@@ -54,6 +54,7 @@ syllableExceptions["subdue"] = 2;
 syllableExceptions["sue"] = 1;
 syllableExceptions["people"] = 2;
 syllableExceptions["trial"] = 2;
+syllableExceptions["trials"] = 2;
 syllableExceptions["Montgomery"] = 3;
 syllableExceptions["trial's"] = 2;
 syllableExceptions["goes"] = 1;
@@ -70,6 +71,7 @@ syllableExceptions["die"] = 1;
 syllableExceptions["plane's"] = 1;
 syllableExceptions["unconscious"] = 3;
 syllableExceptions["terrified"] = 3;
+syllableExceptions["attractions"] = 3;
 
 //Stores if the last character was a vowel
 var lastVowel = false;
@@ -80,7 +82,7 @@ var secondLine = "";
 var thirdLine = "";
 
 //Size of ngrams
-var order = 5;
+var order = 4;
 
 //Empty object for ngrams
 var ngrams = {}; 
@@ -126,23 +128,23 @@ function capitalize(word)
 function findStartingIndex()
 {
 	//Creates an emprty array to store all indexes that contain a space in inputText
-	var spaceIndexes = [];
+	var endSentencesIndexs = [];
 
 	//Finds all indexes that contain a space
 	for(var i = 0; i < inputText.length; i++)
 	{
-		if(i == 0 || inputText[i] == ' ')
+		if(i == 0 || inputText[i] == '.')
 		{
 			//If the current index contains a space add it to the array
-			spaceIndexes.push(i);
+			endSentencesIndexs.push(i);
 		}
 	}
 
 	//Gets a random index with a space to start our poem at
-	var startingIndex = spaceIndexes[getRandomInt(0, spaceIndexes.length)];
+	var startingIndex = endSentencesIndexs[getRandomInt(0, endSentencesIndexs.length)];
 
 	//Returns the index after the random space index it selects, so the line doesn't start with a space
-	return startingIndex + 1;
+	return startingIndex + 2;
 }
 
 function getLineLength(syllableCount)
@@ -216,6 +218,11 @@ function generateLine(expectedSyllables)
 	var correntEnding = checkEnding(result);
 
 	if(!correntEnding)
+	{
+		result = generateLine(expectedSyllables);
+	}
+	
+	if(!checkString(result))
 	{
 		result = generateLine(expectedSyllables);
 	}
@@ -344,6 +351,25 @@ function isVowel(char)
 	{
 		return false;
 	}
+}
+
+function checkString(line)
+{
+	var words = line.split(" ");
+	
+	if(hasDuplicates(words))
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+function hasDuplicates(array)
+{
+    return (new Set(array)).size !== array.length;
 }
 
 function getRandomInt(min, max)
