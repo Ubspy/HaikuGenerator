@@ -82,7 +82,7 @@ var secondLine = "";
 var thirdLine = "";
 
 //Size of ngrams
-var order = 4;
+var order = 7;
 
 //Empty object for ngrams
 var ngrams = {}; 
