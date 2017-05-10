@@ -31,7 +31,7 @@ var inputText = ("A honey bee named Barry Benson has recently graduated from col
 var properNouns = ["Barry", "Barry's" ,"Benson", "Honex", "Industries", "Adam", "Adam's", "Flayman", "Vanessa", "Vanessa's", "Ken", "Layton","Montgomery", "California", "New", "York", "City"];
 
 //Array of words not to end a line with
-var avoidEnding = ["and", "the", "so", "he", "to", "is", "while", "his", "that", "with", "as", "a", "are", "by", "of", "in", "its", "from", "has", "for"];
+var avoidEnding = ["and", "the", "so", "he", "to", "is", "while", "his", "that", "with", "as", "a", "are", "by", "of", "in", "its", "from", "has", "for", "be"];
 
 //Here's a list of exceptions to the basic rules of syllable counting in our getSyllables function below
 var syllableExceptions = [];
@@ -103,7 +103,7 @@ function generatePoem()
 function createNgrams()
 {
 	//Loops through characters in the inputText
-	for(var i = 0; i < inputText.length; i++)
+	for(var i = 0; i < inputText.length - 1; i++)
 	{
 		var gram = inputText.substring(i, i + order); //Gets substring
 
@@ -115,7 +115,7 @@ function createNgrams()
 		}
 
 		//If it's already there, add the character after the substring as a possibility		
-		ngrams[gram][ngrams[gram].length] = inputText.charAt(i + order);
+		ngrams[gram].push(inputText.substring(i + order, i + order + 1));
 	}
 }
 
@@ -181,7 +181,7 @@ function generateLine(expectedSyllables)
 		}
 
 		//Gets a random character based off probability of that character showing up after that ngram
-		var nextCharIndex = getRandomInt(0 ,(possibilities.length - 1));
+		var nextCharIndex = getRandomInt(0 ,(possibilities.length - 2));
 
 		//Sets the next character to that randomly selected index
 		var nextChar = ngrams[currentGram][nextCharIndex];
@@ -215,9 +215,7 @@ function generateLine(expectedSyllables)
 		result = generateLine(expectedSyllables);
 	}
 
-	var correntEnding = checkEnding(result);
-
-	if(!correntEnding)
+	if(!checkEnding(result))
 	{
 		result = generateLine(expectedSyllables);
 	}
@@ -331,7 +329,7 @@ function checkEnding(line)
 	var words = line.split(" ");
 
 	//Checks the last word, and sees if it's an appropriate word to end on
-	if(avoidEnding.indexOf(words[words.length - 2]) > -1)
+	if(avoidEnding.includes(words[words.length - 2]) || properNouns.includes(words[words.length - 2]))
 	{
 		return false;
 	}
@@ -374,5 +372,5 @@ function hasDuplicates(array)
 
 function getRandomInt(min, max)
 {
-	return Math.floor(Math.random() * (max - min + 1)) + min;
+	return Math.round(Math.random() * (max - min + 1)) + min;
 }
