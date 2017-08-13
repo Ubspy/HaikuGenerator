@@ -314,23 +314,14 @@ var ngrams = {};
 function generatePoem()
 {
 	//Generates lines with proper syllable counts
-	//firstLine = generateLine(5);
-	//secondLine = generateLine(7);
-	//thirdLine = generateLine(5);
+	firstLine = generateLine(5);
+	secondLine = generateLine(7);
+	thirdLine = generateLine(5);
 
 	//Puts the finished lines into the html page
-	//document.getElementById("line1").innerHTML = capitalize(firstLine);
-	//document.getElementById("line2").innerHTML = capitalize(secondLine);
-	//document.getElementById("line3").innerHTML = capitalize(thirdLine);
-
-	var clean = cleanString(inputText);
-
-	var words = clean.split(" ");
-
-	for(var i = 100; i < 1000; i++)
-	{
-		console.log(words[i], getSyllables(words[i]));
-	}
+	document.getElementById("line1").innerHTML = capitalize(firstLine);
+	document.getElementById("line2").innerHTML = capitalize(secondLine);
+	document.getElementById("line3").innerHTML = capitalize(thirdLine);
 }
 
 function createNgrams()
