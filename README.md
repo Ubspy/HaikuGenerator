@@ -1,4 +1,4 @@
 # HaikuGenerator
 In this project, I used the siimple framework.
 
-This is my first javascript project, but I'm pretty proud of it
+I got bored so I made a massive meme.
